@@ -71,7 +71,7 @@ ul li::before{
     height: 28px;
     width: 28px;
     border-radius: 50%;
-    background-image: url(Documents/unchecked.png);
+    background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT05CFn-ZWwjv7lB0eXh577jNLi5AlLMxNPXa7JC9xl7m0p5hMw);
     background-size: cover;
     background-position: center;
     top: 12px;
@@ -82,7 +82,7 @@ ul li.checked{
    text-decoration: line-through;
 }
 ul li.checked::before{
-   background-image: url(Documents/checked.png);
+   background-image: url(https://encrypted-tbn1.gstatic.com/images?q=tbn:ANd9GcSXxFzpZ3f6rilkfpWBJExmFZT4j7X9TUQX0HA1btIskEmaEzQz);
 }
 ul li span{
     position: absolute;
