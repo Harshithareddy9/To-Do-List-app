@@ -1,29 +1,170 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="viewport" content="width=device-width,initial-scale=1">
-        <title>To-Do List App</title>
-        <link rel="stylesheet" href="style.css">
-    </head>
-    <body>
-        <div class="container">
-            <div class="todo-app">
-                <h2>
-                    To-Do List <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBQTWRPMSvQ_UxtnfYmjo8VLwcPtB80tp_cSGkregqONTXmJhf">
-                </h2>
-                <div class="row">
-                    <input type="text" id="input-box" placeholder="Add your text">
-                    <button onclick="addTask()">Add</button>
-                </div>
-                <ul id="list-container">
-                   <!--<li class="checked">Task 1</li>
-                    <li>Task 2</li>
-                    <li>Task 3</li> -->
-                </ul>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>To-Do List App</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://kit.fontawesome.com/36c6fef33d.js" crossorigin="anonymous"></script>
+    
+  </head>
+  <body>
+    <div class="container">
+      <div id="signin-page">
+        <div class="form-box">
+          <h1 id="title">signup</h1>
+          <form>
+            <div class="input-group">
+              <div class="input-field" id="nameField">
+                <i class="fa-solid fa-user"></i>
+                <input type="text" placeholder="Name">
+              </div>
+              <div class="input-field">
+                <i class="fa-solid fa-envelope"></i>
+                <input type="email" placeholder="Email">
+              </div>
+              <div class="input-field">
+                <i class="fa-solid fa-lock"></i>
+                <input type="password" placeholder="password">
+              </div>
+              <p>
+                Lost password <a href="#">click here!</a>
+              </p>
             </div>
+            <div class="btn-field">
+              <button type="button" id="signupbtn">sign up</button>
+              <button type="button" id="signinbtn" class="disable">sign in</button>
+            </div>
+          </form>
         </div>
-        <script src="script.js">
+      </div>
+      
+      <div id="todo-section" style="display: none;">
+        <div class="todo-app">
+          <h2>
+            To-Do List <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQBQTWRPMSvQ_UxtnfYmjo8VLwcPtB80tp_cSGkregqONTXmJhf">
+          </h2>
+          <div class="row">
+            <input type="text" id="input-box" placeholder="Add your text">
+            <button onclick="addTask()">Add</button>
+          </div>
+          <ul id="list-container">
+            <!--<li class="checked">Task 1</li>
+            <li>Task 2</li>
+            <li>Task 3</li>-->
+          </ul>
+        </div>
+      </div>
+    </div>
 
-        </script>
-    </body>
+    <script>
+      let signupbtn = document.getElementById("signupbtn");
+let signinbtn = document.getElementById("signinbtn");
+let nameField = document.getElementById("nameField");
+let emailField = document.getElementById("emailField");
+let passwordField = document.getElementById("passwordField");
+let title = document.getElementById("title");
+let signInPage = document.getElementById("signin-page");
+let todoSection = document.getElementById("todo-section");
+let inputbox = document.getElementById("input-box");
+let listcontainer = document.getElementById("list-container");
+
+signupbtn.onclick = function() {
+  const name = nameField.querySelector("input").value;
+  const email = emailField.querySelector("input").value;
+  const password = passwordField.querySelector("input").value;
+
+  if (name === '') {
+    alert("Please enter your name");
+    return;
+  }
+
+  if (email === '') {
+    alert("Please enter your email");
+    return;
+  }
+
+  if (!validateEmail(email)) {
+    alert("Please enter a valid email address");
+    return;
+  }
+
+  if (password === '') {
+    alert("Please enter your password");
+    return;
+  }
+
+  // Save the signup data
+  saveSignupData(name, email, password);
+
+  nameField.style.maxHeight = "0";
+  title.innerHTML = "sign in";
+  signupbtn.classList.add("disable");
+  signinbtn.classList.remove("disable");
+  signInPage.style.display = "none";
+  todoSection.style.display = "block";
+  saveData();
+};
+
+signinbtn.onclick = function() {
+  nameField.style.maxHeight = "0";
+  title.innerHTML = "sign in";
+  signupbtn.classList.remove("disable");
+  signinbtn.classList.add("disable");
+  signInPage.style.display = "none";
+  todoSection.style.display = "block";
+  showtask();
+};
+
+function validateEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
+function saveSignupData(name, email, password) {
+  const userData = {
+    name: name,
+    email: email,
+    password: password
+  };
+  localStorage.setItem("userData", JSON.stringify(userData));
+}
+
+function addTask() {
+  if (inputbox.value === '') {
+    alert("you must write something");
+  } else {
+    let li = document.createElement("li");
+    li.innerHTML = inputbox.value;
+    listcontainer.appendChild(li);
+    let span = document.createElement("span");
+    span.innerHTML = "\u00d7";
+    li.appendChild(span);
+  }
+  inputbox.value = "";
+  saveData();
+}
+
+listcontainer.addEventListener("click", function(e) {
+  if (e.target.tagName === "LI") {
+    e.target.classList.toggle("checked");
+    saveData();
+  } else if (e.target.tagName === "SPAN") {
+    e.target.parentElement.remove();
+    saveData();
+  }
+}, false);
+
+function saveData() {
+  localStorage.setItem("data", listcontainer.innerHTML);
+}
+
+function showtask() {
+  listcontainer.innerHTML = localStorage.getItem("data");
+}
+
+showtask();
+
+
+    </script>
+  </body>
 </html>
